@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('todo');
+            $table->string('todo')->nullable();
             $table->dateTime('completed_at')->nullable();
             $table->timestamps();
         });

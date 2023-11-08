@@ -17,17 +17,8 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Welcome');
-
-    }
-
-    public function dashboard(){
-        $todos = User::with('todos')->where('id', Auth::id());
-        return Inertia::render('Dashboard', ['todos' => $todos]);
-    }
-
-    public function about(){
-        return Inertia::render('About');
+        $todos = Todo::where('user_id', Auth::id())->get();
+        return Inertia::render('Todo', ['todos' => $todos]);
     }
 
     /**
@@ -48,7 +39,7 @@ class TodoController extends Controller
         $todo->user_id = Auth::id();
         $todo->save();
 
-        return to_route('dashboard');
+        return back();
     }
 
     /**

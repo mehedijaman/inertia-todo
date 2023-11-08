@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodoController;
+use Inertia\Inertia;
 
 
 /*
@@ -17,13 +19,25 @@ use App\Http\Controllers\TodoController;
 |
 */
 
-Route::get('/', [TodoController::class, 'index'])->name('home');
-Route::get('/about', [TodoController::class, 'about'])->name('about');
+Route::get('/', function(){
+   return Inertia::render('Welcome');
+})->name('home');
+
+Route::get('/about', function(){
+    return Inertia::render('About');
+})->name('about');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [TodoController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/todo', [TodoController::class, 'index'])->name('todo');
     Route::post('/todo', [TodoController::class, 'store'])->name('todo.store');
+    Route::get('/todo/{id}', [TodoController::class, 'edit'])->name('todo.edit');
+    Route::patch('/todo/{id}', [TodoController::class, 'update'])->name('todo.update');
+    Route::delete('/todo/{id}', [TodoController::class, 'destroy'])->name('todo.destroy');
+
+    Route::post('/todo/{id}/complete', [TodoController::class, 'complete'])->name('todo.complete');
+    Route::post('/todo/{id}/undo', [TodoController::class, 'undo'])->name('todo.undo');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
