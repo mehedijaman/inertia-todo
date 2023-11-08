@@ -83,7 +83,6 @@ function update(id){
     })
 }
 
-
 </script>
 
 <template>
